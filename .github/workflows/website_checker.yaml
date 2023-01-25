@@ -33,3 +33,4 @@ jobs:
           SEND_EMAIL_PASSWORD: ${{ secrets.SEND_EMAIL_PASSWORD }}
           PG_CONNECTION_URL: ${{ secrets.PG_CONNECTION_URL }}
           DEBUG: ${{ secrets.DEBUG }}
+
