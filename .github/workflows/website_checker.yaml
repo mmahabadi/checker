@@ -9,13 +9,27 @@ on:
 jobs:
   update-gist:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 16.x ]
+
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: yarn
       - name: Install
-        run: npm ci
-      - name: Update gist
+        run: yarn
+      - name: Check website
         run: node ./index.js
         env:
           CHECK_URL: ${{ secrets.CHECK_URL }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          CHANNEL_NAME: ${{ secrets.CHANNEL_NAME }}
+          TELEGRAM_RECEIVERS_CHAT_IDS: ${{ secrets.TELEGRAM_RECEIVERS_CHAT_IDS }}
+          RECEIVERS_EMAILS: ${{ secrets.RECEIVERS_EMAILS }}
+          SEND_EMAIL_ADDRESS: ${{ secrets.SEND_EMAIL_ADDRESS }}
+          SEND_EMAIL_PASSWORD: ${{ secrets.SEND_EMAIL_PASSWORD }}
+          PG_CONNECTION_URL: ${{ secrets.PG_CONNECTION_URL }}
+          DEBUG: ${{ secrets.DEBUG }}
